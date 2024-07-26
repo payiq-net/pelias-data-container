@@ -1,0 +1,43 @@
+# Image for loading data into the elastic search
+
+FROM node:18-bullseye-slim
+
+ARG DIGITRANSIT_SUBSCRIPTION_KEY
+ARG ELASTICSEARCH_HOST
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git unzip python3 python3-pip python3-dev build-essential gdal-bin \
+ rlwrap procps emacs curl vim less
+
+# Copy pelias config file
+ADD pelias-tools.json /root/pelias.json
+RUN mkdir -p /mnt/data
+
+RUN mkdir -p /mnt/tools/scripts
+ADD scripts/* /mnt/tools/scripts/
+RUN /bin/bash -c "source /mnt/tools/scripts/install-importers.sh"
+
+ENV TOOLS=/mnt/tools
+ENV SCRIPTS=/mnt/tools/scripts
+ENV DATA=/mnt/data
+
+ENV API_SUBSCRIPTION_QUERY_PARAMETER_NAME=digitransit-subscription-key
+ENV API_SUBSCRIPTION_TOKEN=$DIGITRANSIT_SUBSCRIPTION_KEY
+ENV ELASTICSEARCH_HOST=$ELASTICSEARCH_HOST
+ENV APIURL="https://api.digitransit.fi/"
+
+WORKDIR $DATA
+
+ADD patches/openstreetmap-0001.patch /mnt/tools/openstreetmap
+ADD patches/openstreetmap-0002.patch /mnt/tools/openstreetmap
+WORKDIR /mnt/tools/openstreetmap
+RUN patch -p1 < openstreetmap-0001.patch
+RUN patch -p1 < openstreetmap-0002.patch
+RUN npm i
+
+ADD patches/pelias-vrk-0001.patch /mnt/tools/pelias-vrk
+WORKDIR /mnt/tools/pelias-vrk
+RUN patch -p1 < pelias-vrk-0001.patch
+
+WORKDIR $DATA
+CMD /bin/bash

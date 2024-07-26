@@ -1,0 +1,15 @@
+diff --git a/import.js b/import.js
+index 08fd022..b05a9f6 100644
+--- a/import.js
++++ b/import.js
+@@ -16,9 +16,9 @@ const hashes = {};
+ // read all existing address documents from ES into a hashtable for deduping
+ async function createDeduper() {
+   var hashCount = 0;
+-
++  const host = process.env.ELASTICSEARCH_HOST ? process.env.ELASTICSEARCH_HOST : 'localhost:9200';
+   const client = new elasticsearch.Client({
+-    host: 'localhost:9200',
++    host: host,
+     apiVersion: '7.6',
+   });

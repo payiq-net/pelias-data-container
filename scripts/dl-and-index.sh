@@ -32,66 +32,19 @@ fi
 
 echo "###### Using $APIURL data"
 
-#==============
-# Download data
-#==============
-
-$SCRIPTS/vrk-loader.sh
-$SCRIPTS/osm-loader.sh
-$SCRIPTS/nlsfi-loader.sh
-$SCRIPTS/gtfs-loader.sh
-
-cd $TOOLS
-git clone --single-branch https://github.com/hsldevcom/pelias-data-container tpdc
-mv tpdc/wof_data $DATA/
-rm -rf tpdc
+source $SCRIPTS/load-all.sh
 
 #=================
 # Index everything
 #=================
 
-# param1: zip name containing gtfs data
-# param2: import folder name
-function import_gtfs {
-    unzip -o $1
+source $SCRIPTS/index-maps.sh
 
-    # extract feed id
-    index=$(sed -n $'1s/,/\\\n/gp' feed_info.txt | grep -nx 'feed_id' | cut -d: -f1)
-    prefix=$(cat feed_info.txt | sed -n 2p | cut -d "," -f $index)
-    node $TOOLS/pelias-gtfs/import -d $DATA/$2 --prefix=$prefix
-    # remove already parsed gtfs files
-    rm *.txt
-}
+export APIURL
+source $SCRIPTS/index-parknride-bikes.sh
 
-function import_router {
-    cd $DATA/$1
-    targets=(`ls *.zip`)
-    for target in "${targets[@]}"
-    do
-        import_gtfs $target $1
-    done
-}
-
-import_router gtfs
-echo '###### gtfs done'
-
-node $TOOLS/bikes-pelias/import "$APIURL"routing/v2/routers/finland/index/graphql$APIKEYPARAMS
-node $TOOLS/bikes-pelias/import "$APIURL"routing/v2/routers/waltti/index/graphql$APIKEYPARAMS
-echo '###### city bike station loading done'
-
-node $TOOLS/parking-areas-pelias/import "$APIURL"routing/v2/routers/hsl/index/graphql$APIKEYPARAMS liipi
-echo '###### park & ride location loading done'
-
-node $TOOLS/openstreetmap/index
-echo '###### openstreetmap done'
-
-node $TOOLS/pelias-nlsfi-places-importer/lib/index -d $DATA/nls-places
-echo '###### nlsfi places done'
-
-#import dvv address data
-cd  $TOOLS/pelias-vrk
-node import.js $DATA/vrk/vrk.txt
-echo '###### DVV done'
+# node $TOOLS/pelias-nlsfi-places-importer/lib/index -d $DATA/nls-places
+# echo '###### nlsfi places done'
 
 #cleanup
 rm -rf $DATA/vrk

@@ -1,0 +1,37 @@
+From 0d5c64330073462c19d3b95f51f102dc24cdd472 Mon Sep 17 00:00:00 2001
+From: Mikko Hurskainen <hurskmi@payiq.net>
+Date: Mon, 22 Jul 2024 16:16:19 +0000
+Subject: [PATCH] Update pbf2json to fix arm64 build
+
+---
+ package.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/package.json b/package.json
+index c9355af..08e85a7 100644
+--- a/package.json
++++ b/package.json
+@@ -41,7 +41,7 @@
+     "joi": "^14.0.0",
+     "lodash": "^4.17.21",
+     "merge": "^1.2.0",
+-    "pbf2json": "github:hsldevcom/pbf2json",
++    "pbf2json": "^6.10.0",
+     "pelias-config": "^4.8.0",
+     "pelias-dbclient": "github:hsldevcom/dbclient",
+     "pelias-logger": "^1.2.1",
+diff --git a/stream/pbf.js b/stream/pbf.js
+index 488a30b..e3423ab 100644
+--- a/stream/pbf.js
++++ b/stream/pbf.js
+@@ -51,7 +51,6 @@ function config(opts){
+     } else {
+       opts.tags = features.tags;
+     }
+-    opts.tags = opts.tags.join(',');
+   }
+
+   if(!opts.names){
+-- 
+2.25.1
+

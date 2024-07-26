@@ -1,0 +1,15 @@
+diff --git a/index.js b/index.js
+index 02a01f6..5f5c95d 100644
+--- a/index.js
++++ b/index.js
+@@ -10,9 +10,9 @@ var hashCount = 0;
+ // read all existing stations from ES into a hashtable for deduping
+
+ async function createDeduper() {
+-
++  const host = process.env.ELASTICSEARCH_HOST ? process.env.ELASTICSEARCH_HOST : 'localhost:9200';
+   const client = new elasticsearch.Client({
+-    host: 'localhost:9200',
++    host: host,
+     apiVersion: '7.6',
+   });
