@@ -9,5 +9,5 @@ if [ -z "$DIGITRANSIT_SUBSCRIPTION_KEY" ]; then
 fi
 
 docker build --tag payiq/pelias-data-container-tools --build-arg ELASTICSEARCH_HOST=host.docker.internal:9200 --build-arg DIGITRANSIT_SUBSCRIPTION_KEY=$DIGITRANSIT_SUBSCRIPTION_KEY -f Dockerfile.tools .
-docker run -it payiq/pelias-data-container-tools
+docker run -it --add-host=host.docker.internal:host-gateway payiq/pelias-data-container-tools
 
