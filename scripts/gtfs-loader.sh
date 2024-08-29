@@ -39,7 +39,7 @@ load_gtfs v3 finland
 # use already validated osm data from our own data api
 mv router-finland/*.pbf openstreetmap/
 
-load_gtfs v3 waltti
+# load_gtfs v3 waltti
 load_gtfs v3 hsl
 load_gtfs v3 varely
 
