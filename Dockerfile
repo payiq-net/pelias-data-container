@@ -66,4 +66,3 @@ RUN start-stop-daemon -S -c 1000 -b -x /usr/share/elasticsearch/bin/elasticsearc
     && /mnt/tools/scripts/index-maps.sh \
     && start-stop-daemon -K -p /var/run/elasticsearch.pid
 
-CMD eswrapper
