@@ -59,7 +59,7 @@ WORKDIR /mnt/tools/pelias-vrk
 RUN patch -p1 < pelias-vrk-0001.patch
 
 WORKDIR $DATA
-RUN /mnt/tools/scripts/load-all.sh
+RUN /mnt/tools/scripts/load-all.sh $DIGITRANSIT_SUBSCRIPTION_KEY $MMLAPIKEY
 
 RUN start-stop-daemon -S -c 1000 -b -x /usr/share/elasticsearch/bin/elasticsearch -m -p /var/run/elasticsearch.pid \
     && while ! nc -z localhost 9200; do sleep 0.1; done \
