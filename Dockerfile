@@ -13,6 +13,7 @@ ENV ES_JAVA_OPTS="-Xms512m -Xmx512m"
 
 ARG DIGITRANSIT_SUBSCRIPTION_KEY
 ARG ELASTICSEARCH_HOST
+ARG MMLAPIKEY
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends git unzip python3 python3-pip python3-dev build-essential gdal-bin \
@@ -42,6 +43,7 @@ ENV API_SUBSCRIPTION_QUERY_PARAMETER_NAME=digitransit-subscription-key
 ENV API_SUBSCRIPTION_TOKEN=$DIGITRANSIT_SUBSCRIPTION_KEY
 ENV ELASTICSEARCH_HOST=$ELASTICSEARCH_HOST
 ENV APIURL="https://api.digitransit.fi/"
+ENV MMLAPIKEY=$MMLAPIKEY
 
 WORKDIR $DATA
 

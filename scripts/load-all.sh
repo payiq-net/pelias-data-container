@@ -8,7 +8,7 @@ set -e
 
 $SCRIPTS/vrk-loader.sh
 $SCRIPTS/osm-loader.sh
-# $SCRIPTS/nlsfi-loader.sh
+$SCRIPTS/nlsfi-loader.sh
 $SCRIPTS/gtfs-loader.sh
 
 cd $TOOLS
