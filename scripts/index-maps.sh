@@ -41,3 +41,6 @@ echo '###### openstreetmap done'
 cd  $TOOLS/pelias-vrk
 node import.js $DATA/vrk/vrk.txt
 echo '###### DVV done'
+
+node $TOOLS/pelias-nlsfi-places-importer/lib/index -d $DATA/nls-places
+echo '###### NLSFI done'
