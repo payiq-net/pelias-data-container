@@ -33,7 +33,7 @@ RUN mkdir -p /mnt/data
 
 RUN mkdir -p /mnt/tools/scripts
 ADD scripts/* /mnt/tools/scripts/
-RUN /bin/bash -c "source /mnt/tools/scripts/install-importers.sh"
+RUN . "$NVM_DIR/nvm.sh" && nvm use 18 && /bin/bash -c "source /mnt/tools/scripts/install-importers.sh"
 
 ENV TOOLS=/mnt/tools
 ENV SCRIPTS=/mnt/tools/scripts
